@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Magazie</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet"
+          type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/clean-blog.min.css')}}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" style="background-color:	#C0C0C0">
+    <div class="container">
+
+
+        <div class="dropdown">
+            <button style="border-radius: 10px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Magazie generala
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/equipments">Echipamente</a>
+                <a class="dropdown-item" href="/materials">Materiale</a>
+            </div>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto ">
+
+                {%if not current_user.is_authenticated:%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login Admin</a>
+                </li>
+
+                {%else%}
+                <li class="nav-item">
+                    {% if request.path == '/' %}
+                    <form action="{{ url_for('change_user') }}" method="POST">
+                        <label for="nume"><strong>Cont curent:</strong></label>
+                        <select id="nume" name="nav-link" class="form-control" onchange="this.form.submit()">
+                            {% for user in users[1:] %}
+                            <option value="{{ user.name }}"
+                                    {% if user.name== current_user.name %}selected{% endif %}>
+                                {{user.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                    {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="/">Cont curent: {{ current_user.name }}</a>
+                </li>
+                {% endif %}
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/inventory">Inventar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {%endif%}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+
+
+            </ul>
+        </div>
+
+        <div style="font-size: 16px" class="search-container">
+            <form action="/search" method="POST">
+                <span>
+                <input style="background-color: rgba(239, 239, 240,1); border-radius:15px" type="text"
+                       placeholder="Cauta dupa nume..." name="searchbox">
+                <button style=" border-radius:10px;background-color: rgba(239, 239, 240,1)" type="submit"><i
+                        class="fa fa-search"></i></button>
+                    </span>
+            </form>
+        </div>
+
+
+    </div>
+</nav>

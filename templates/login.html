@@ -1,0 +1,40 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/register.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h1>Logare</h1>
+                    <span class="subheading">Logare in contul de admin.</span>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <p>Logare in contul de admin!</p>
+
+
+            {% if error %}
+    <p class=error , style="text-align:center;  color: red"><strong>Error:</strong> {{ error }}
+  {% endif %}
+            {{ wtf.quick_form(form, button_map={"submit": "primary"}, novalidate=False) }}
+
+
+        </div>
+    </div>
+</div>
+
+<hr>
+
+{% include "footer.html" %}

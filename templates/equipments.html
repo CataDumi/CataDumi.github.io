@@ -1,0 +1,94 @@
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header class="masthead"
+        style="background-image: url('https://www.rador.ro/wp-content/uploads/2020/09/E-Distributie_Muntenia.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Magazie echipamente</h1>
+                    <span class="subheading">Echipamente.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Buttons -->
+    {%if current_user.is_authenticated:%}
+    <div class="clearfix" role="group">
+        <a style="border-radius:10px" class="btn btn-primary float-left " href="/register">Adauga personal</a>
+        <a style="border-radius:10px" class="btn btn-primary float-right" href="/add_equipment">Adauga echipament</a>
+        <a style="border-radius:10px;  margin-right: 270px;" class="btn btn-primary float-right" href="/update">Updateaza
+            baza de date</a>
+    </div>
+    <hr>
+    {%endif%}
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <h3 style="text-align:center"><em>{{ message }}</em></h3>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="row" style="font-size: 14px;">
+        {% for item in content %}
+
+        <div class="col-12" id="first-element" style="display: flex; flex-wrap: wrap;margin: 10px;border:solid">
+            <h2 class="post-title" style="margin: 10px;font-size: 17px">Nume echipament: {{item.name}}</h2>
+            <h2 class="post-title" style="margin: 10px;font-size: 17px">Marca: {{item.marca}}</h2>
+            <h3 class="post-subtitle" style="margin: 10px;font-size: 17px">Cantitate valabila: {{item.quantity}}</h3>
+            <h3 class="post-subtitle" style="margin: 10px;font-size: 10px">Ultima actualizare: {{item.date}}</h3>
+        </div>
+
+        {%if current_user.is_authenticated:%}
+        <div class="col-12 " id="second element" style="display: flex; flex-wrap: wrap;margin: 10px;">
+            <button class="btn btn-sm btn-warning" style="border-radius: 10px; margin: 10px;font-size: 15px"><a
+                    href="{{url_for('edit',id=item.id)}}">Modifica elementul</a></button>
+            <button class="btn btn-sm btn-warning" style="border-radius: 10px;margin:10px;font-size: 15px"><a
+                    href="{{url_for('delete_book',id=item.id)}}">Sterge echipamentul din magazie</a></button>
+
+
+            {% if not item.quantity == 0 %}
+            <form method="POST" action="{{url_for('add_to_cart', id=item.id)}}">
+                <input type="hidden" name="page" value="equipments">
+                <div class="input-group" style="margin: 10px;">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-sm btn-warning" type="submit" id="button-addon1"
+                                style="border-radius: 10px;font-size: 15px">Adauga in inventar
+                        </button>
+                    </div>
+                    <input style="border-radius: 10px; margin-left: 10px; margin: 10px;font-size: 15px;width:180px;"
+                           type="number"
+                           class="form-control" placeholder="Introduceti cantitatea"
+                           aria-label="Introduceti cantitatea" aria-describedby="button-addon1" min="0"
+                           pattern="\d+" name="quantity" max="{{item.quantity}}"
+                           value="1">
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <hr style="margin-top: 10px; margin-bottom: 10px;">
+    {%endif%}
+
+    {% endfor %}
+
+
+</div>
+<hr>
+
+
+{% include "footer.html" %}

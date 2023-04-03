@@ -1,0 +1,39 @@
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header class="masthead"
+        style="background-image: url('https://www.rador.ro/wp-content/uploads/2020/09/E-Distributie_Muntenia.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Pagina principala</h1>
+                    <span class="subheading">Subtitlu.</span>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- Main Content -->
+<div class="container">
+
+<!-- Buttons -->
+    {%if current_user.is_authenticated:%}
+    <div class="clearfix" role="group">
+        <a style="border-radius:10px" class="btn btn-primary float-left " href="/register">Adauga personal</a>
+        <a style="border-radius:10px" class="btn btn-primary float-right" href="/add_equipment">Adauga echipament</a>
+        <a style="border-radius:10px;  margin-right: 270px;" class="btn btn-primary float-right" href="/update">Updateaza baza de date</a>
+    </div>
+    <hr>
+    {%endif%}
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,115 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/catalogue.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h2>Cautare</h2>
+                    <span class="subheading">Subtitlu</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <br>
+    <div class="row" style="margin:auto">
+
+        <div>
+            {%for item in items:%}
+
+            {%if item.type=='material':%}
+            <div class="post-preview">
+                <h2 style="font-size: 25px" class="post-title">Nume echipament: {{item.name}}</h2>
+                <h1  style="font-size: 2`5px" class="post-title" >Marca: {{item.marca}}</h1>
+                {%if not item.quantity==0:%}
+                <p style="font-size: 15px" class="post-meta">Cantitate valabila
+                    <a href="#">{{item.quantity}}</a>
+                    in data de {{date}}</p>
+                {%else:%}
+
+                <p style="font-size: 15px;margin-bottom:10px" class="post-meta">Nu mai e in stoc.</p>
+                {%endif%}
+
+                {%if current_user.is_authenticated:%}
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('delete_book',id=item.id)}}">Sterge echipament</a></button>
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('edit',id=item.id)}}">Modifica echipament</a></button>
+
+                {%if not item.quantity==0:%}
+                <form method="POST" action="{{url_for('add_to_cart', id=item.id)}}">
+                    <input type="hidden" name="page" value="materials">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-sm btn-warning" type="submit" id="button-addon1"
+                                    style="margin:0.5%; border-radius:10px">Adauga in inventar
+                            </button>
+                        </div>
+                        <input style="margin:0.5%; border-radius:10px" type="number" class="form-control"
+                               placeholder="Introduceti cantitatea" aria-label="Introduceti cantitatea"
+                               aria-describedby="button-addon1" min="0" pattern="\d+" name="quantity">
+                    </div>
+                </form>
+                {%endif%}
+
+                {% endif %}
+            </div>
+            {%elif item.type=='equipment':%}
+            <div class="post-preview">
+                <h2 style="font-size: 25px" class="post-title">Nume echipament: {{item.name}}</h2>
+                <h1  style="font-size: 2`5px" class="post-title" >Marca: {{item.marca}}</h1>
+                {%if not item.quantity==0:%}
+                <p style="font-size: 15px" class="post-meta">Cantitate valabila
+                    <a href="#">{{item.quantity}}</a>
+                    in data de {{date}}</p>
+                {%else:%}
+
+                <p style="font-size: 15px;margin-bottom:10px" class="post-meta">Nu mai e in stoc.</p>
+                {%endif%}
+
+                {%if current_user.is_authenticated:%}
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('delete_book',id=item.id)}}">Sterge echipament</a></button>
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('edit',id=item.id)}}">Modifica echipament</a></button>
+
+                {%if not item.quantity==0:%}
+                <form method="POST" action="{{url_for('add_to_cart', id=item.id)}}">
+                    <input type="hidden" name="page" value="equipments">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-sm btn-warning" type="submit" id="button-addon2"
+                                    style="margin:0.5%; border-radius:10px">Adauga in inventar
+                            </button>
+                        </div>
+                        <input style="margin:0.5%; border-radius:10px" type="number" class="form-control"
+                               placeholder="Introduceti cantitatea" aria-label="Introduceti cantitatea"
+                               aria-describedby="button-addon1" min="0" pattern="\d+" name="quantity"
+                        >
+                    </div>
+                </form>
+                {%endif%}
+
+                {% endif %}
+            </div>
+            {%endif%}
+
+            <hr>
+
+            {% endfor %}
+        </div>
+
+    </div>
+    <hr>
+</div>
+{% include "footer.html" %}
+{% endblock %}

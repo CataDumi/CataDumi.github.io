@@ -1,0 +1,85 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header class="masthead"
+        style="background-image: url('https://www.rador.ro/wp-content/uploads/2020/09/E-Distributie_Muntenia.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Inventar personal : {{current_user.name}}</h1>
+                    <span class="subheading">Subtitlu.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+<!-- Main Content -->
+<div class="container">
+    {% if not num_of_products==0: %}
+    <button name='pdf_button' class="btn btn-sm btn-warning float-left" style="color: black;margin:0.5%; border-radius:10px" type="button" class="btn btn-outline-light">
+        <a href=" {{url_for('personal_report')}}">Genereaza si descarca Pdf</a>
+    </button>
+    <section style="display: flex">
+
+
+        <div style="margin:auto" class="container">
+
+            <div class="row">
+                <div style="display: flex margin:auto; " class="col-lg-8 col-md-10 mx-auto">
+                    {% for item in inventory %}
+                    <div style="width: 100%; float:right" class="post-preview">
+                        <h1 style="font-size: 80%;" class="post-title">
+                            Nume echipament: {{item.item_name}}
+                        </h1>
+                        <h1 style="font-size: 80%;" class="post-title">
+                            Cantitate: {{item.item_quantity}}
+                        </h1>
+                        <h1 style="font-size: 80%;" class="post-title">
+                            Data adaugarii in inventar: {{item.date_item_added}}
+                        </h1>
+
+                    </div>
+
+
+                    <form method="POST" action="{{url_for('return_item',id=item.id)}}">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-sm btn-warning" type="submit" id="button-addon1"
+                                        style="margin:0.5%; border-radius:10px">Returneaza echipament
+                                </button>
+                            </div>
+                            <input style="margin:0.5%; border-radius:10px" type="number" class="form-control"
+                                   placeholder="Introduceti cantitatea" aria-label="Introduceti cantitatea"
+                                   aria-describedby="button-addon1" min="0" pattern="\d+" name="quantity"
+                                   max="{{item.item_quantity}}"
+                            value="0">
+                            <input type="hidden" name="name" value="{{item.item_name}}">
+                        </div>
+                    </form>
+                    <hr>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    {%else:%}
+
+    <h1 style="color:grey;text-align:center;"><em>In momentul de fata inventarul este gol.</em></h1>
+    {%endif%}
+</div>
+
+
+{% include "footer.html" %}
+{% endblock %}
