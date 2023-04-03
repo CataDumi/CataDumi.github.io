@@ -1,0 +1,80 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/catalogue.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h1>Catalogue</h1>
+                    <span class="subheading">A large variety of items</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <p style="text-align:center">{{ message }}</p>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="container" >
+
+
+    {% for item in content %}
+    <br>
+    <div class="row"  style="display: inline-block;">
+        <div >
+
+            <div style="width: 50%; float:left; margin:10px " class="post-preview">
+                <h2 style="font-size: 25px;margin-bottom:10px" class="post-title">
+                    Nume echipament: {{item.name}}
+                </h2>
+
+
+                {%if not item.quantity==0:%}
+                <h3 style="font-size: 15px;margin-bottom:10px" class="post-meta">Cantitate valabila :
+                    <a href="#">{{item.quantity}}</a>
+                    la data de  {{date}}</h3>
+                {%else:%}
+                <p style="font-size: 15px;margin-bottom:10px" class="post-meta">Book out of stock. We will restock soon.</p>
+                {%endif%}
+
+
+                {%if current_user.is_authenticated:%}
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('delete_book',id=item.id)}}">Delete book</a></button>
+
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('edit',id=item.id)}}">Edit book</a></button>
+
+                {%if not item.quantity==0:%}
+                <button class="btn btn-sm btn-warning" style="margin:0.5%; border-radius:10px">
+                    <a href="{{url_for('add_to_cart',id=item.id)}}" >Add to cart</a>
+                </button>
+                {%endif%}
+
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+    <hr>
+    {% endfor %}
+
+
+</div>
+
+{% include "footer.html" %}
+{% endblock %}
